@@ -1,0 +1,100 @@
+import java.util.*;
+
+public class Veritone_Interview {
+
+    /*
+
+    Input: 12,11,90,82,7,9
+    Output: deepest, 9; depth, 3
+
+    1. normally iterate list
+    2. add first ele as root
+    3. if(ele < root), add ele as root.left = recursion()
+    4. else if(ele > root). add ele as root.right
+
+
+
+     */
+    static class TreeNode{
+        int val;
+        TreeNode left;
+        TreeNode right;
+        TreeNode(){};
+        TreeNode(int val){
+            this.val = val;
+        }
+        TreeNode(int val, TreeNode left, TreeNode right){
+            this.val = val;
+            this.left = left;
+            this.right = right;
+        }
+    }
+    // recursion
+    public static TreeNode BTS_Solution (List<Integer> list) {
+        //bfs - queue iterative
+        Deque<TreeNode> queue = new LinkedList<>();
+        TreeNode root = new TreeNode(list.get(0));
+        queue.add(root);
+        int level = 0;
+
+        List<Integer> res = new ArrayList<>();
+        TreeNode dumbhead = root;
+
+
+//        queue.
+//        get the deepest = 9, depth = 3
+//        TreeNode cur = root;
+        // 12,11,90,82,7,9
+            int i = 1;
+            while(i < list.size()){ //
+                TreeNode cur = queue.poll();
+                    if (list.get(i) < cur.val) {
+                        cur.left = new TreeNode(list.get(i));
+                        queue.add(cur.left);
+
+                        if(i + 1 < list.size()){
+                            if(list.get(i + 1) > cur.val){
+                                cur.right = new TreeNode(list.get(i + 1));
+                                queue.add(cur.right);
+                                level++;
+                                i++;
+                            }
+                            else {
+                                //there is no right node, this level is done, go to next level by incrementing level
+                                level++;
+                            }
+                        }
+
+                    }
+
+                    else if (list.get(i) > cur.val) {
+                        cur.right = new TreeNode(list.get(i));
+                        queue.add(cur.right);
+                        level++;
+                    }
+                    i++;
+            }
+
+            res.add(queue.getLast().val);
+            res.add(level);
+            System.out.println(res);
+
+            return dumbhead;
+    }
+
+
+    public static void main (String[] args){
+        List<Integer> list = new ArrayList<>();
+        //12,11,90,82,7,9
+        list.add(12);
+        list.add(11);
+        list.add(90);
+        list.add(82);
+        list.add(7);
+        list.add(9);
+
+        BTS_Solution(list);
+    }
+}
+
+
